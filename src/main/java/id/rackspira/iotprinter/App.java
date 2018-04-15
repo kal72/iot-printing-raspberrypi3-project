@@ -17,8 +17,6 @@ import id.rackspira.iotprinter.model.PrintProfile;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
 
 public class App {
@@ -33,7 +31,6 @@ public class App {
         pubnub.addListener(subscribeCallbackPrintChannel());
 
         pubnub.subscribe().channels(Arrays.asList(Constant.PN_CHANNEL_PRINTING)).execute();
-//        pubnub.publish().channel(Constant.PN_CHANNEL_PRINTING).message(user).async(pnPublishResultPNCallback());
 
     }
 
@@ -71,7 +68,8 @@ public class App {
                 // Handle new message stored in message.message
                 if (message.getChannel() != null) {
                     PrintProfile printProfile = AppHelper.gson().fromJson(message.getMessage().toString(), PrintProfile.class);
-                    printService(Constant.LINK +"/"+printProfile.getLink());
+                    printService(Constant.LINK +"/"+printProfile.getTitle());
+                    System.out.println(printProfile.getTitle());
                 } else {
                     System.out.println("Channer is null");
                 }
@@ -100,12 +98,5 @@ public class App {
         System.out.println("Hello World! " + App.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString());
     }
 
-    private static void downloadUsingNIO(String urlStr, String file) throws IOException {
-        URL url = new URL(urlStr);
-        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        fos.close();
-        rbc.close();
-    }
+
 }

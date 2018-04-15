@@ -4,10 +4,19 @@ public class PrintProfile {
 
     private int id;
     private String link;
+    private String Title;
     private User user;
 
     public int getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return Title;
+    }
+
+    public void setTitle(String title) {
+        this.Title = title;
     }
 
     public void setId(int id) {
